@@ -2,1410 +2,392 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mie Gacoan Tycoon</title>
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/8775/8775447.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JMC Word Case Converter & Analysis</title>
+    
+    <!-- Favicon: Ikon Tulisan Tangan (SVG Data URL) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/></svg>">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
         body {
-            background-color: #1a1a2e;
-            color: #f5f5f5;
-            line-height: 1.6;
-            padding: 15px;
-            background-image: radial-gradient(#16213e 1px, transparent 1px);
-            background-size: 20px 20px;
-            touch-action: manipulation;
-            overflow-x: hidden;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 15px;
-        }
-        
-        header {
-            grid-column: 1 / -1;
-            text-align: center;
-            margin-bottom: 15px;
-            padding: 15px;
-            background: linear-gradient(135deg, #e63946 0%, #a4161a 100%);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-        
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 8px;
-            color: #ffffff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        h2 {
-            font-size: 1.3rem;
-            margin-bottom: 12px;
-            color: #f8c630;
-            border-bottom: 2px solid #e63946;
-            padding-bottom: 5px;
-        }
-        
-        .restaurant-info {
-            background-color: #16213e;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            margin-bottom: 15px;
-        }
-        
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        .stat-box {
-            background-color: #0f3460;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            border-left: 4px solid #e63946;
-        }
-        
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #f8c630;
-            margin-top: 5px;
-        }
-        
-        .stat-label {
-            font-size: 0.85rem;
-            color: #b8b8b8;
-        }
-        
-        .main-action {
-            text-align: center;
-            padding: 15px;
-            background-color: #16213e;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            margin-bottom: 15px;
-        }
-        
-        #serve-btn {
-            background: linear-gradient(135deg, #f8c630 0%, #e6a500 100%);
-            color: #1a1a2e;
-            border: none;
-            padding: 18px 35px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 12px rgba(248, 198, 48, 0.4);
-            margin-bottom: 12px;
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
-            touch-action: manipulation;
-        }
-        
-        #serve-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 16px rgba(248, 198, 48, 0.6);
-        }
-        
-        #serve-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .menu-container, .upgrades-container, .employees-container {
-            background-color: #16213e;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            margin-bottom: 15px;
-        }
-        
-        .menu-item, .upgrade-item, .employee-item {
-            background-color: #0f3460;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid #e63946;
-            transition: transform 0.2s;
-            min-height: 80px;
-        }
-        
-        .menu-item:hover, .upgrade-item:hover, .employee-item:hover {
-            transform: translateX(3px);
-        }
-        
-        .item-info {
-            flex: 1;
-            padding-right: 10px;
-        }
-        
-        .item-name {
-            font-weight: bold;
-            font-size: 1rem;
-            color: #f8c630;
-            margin-bottom: 4px;
-        }
-        
-        .item-desc {
-            font-size: 0.85rem;
-            color: #b8b8b8;
-            margin-bottom: 4px;
-            line-height: 1.3;
-        }
-        
-        .item-level {
-            font-size: 0.8rem;
-            color: #e63946;
-        }
-        
-        .item-cost {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #4dff91;
-            margin-bottom: 8px;
-            text-align: right;
-        }
-        
-        .item-action {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            min-width: 100px;
-        }
-        
-        .buy-btn {
-            background: linear-gradient(135deg, #4dff91 0%, #1a8c4d 100%);
-            color: #1a1a2e;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: opacity 0.2s;
-            font-size: 0.9rem;
-            min-height: 40px;
-            min-width: 80px;
-            touch-action: manipulation;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .buy-btn.insufficient {
-            background: linear-gradient(135deg, #777 0%, #555 100%);
-            color: #aaa;
-            cursor: not-allowed;
-        }
-        
-        .buy-btn:not(.insufficient):active {
-            opacity: 0.8;
-        }
-        
-        .progress-container {
-            grid-column: 1 / -1;
-            background-color: #16213e;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            margin-top: 10px;
-        }
-        
-        .progress-bar {
-            height: 18px;
-            background-color: #0f3460;
-            border-radius: 9px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #e63946 0%, #f8c630 100%);
-            width: 0%;
-            transition: width 0.5s;
-        }
-        
-        .achievement-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
-        }
-        
-        .achievement {
-            background-color: #0f3460;
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-            border: 2px solid transparent;
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .achievement.unlocked {
-            border-color: #f8c630;
-        }
-        
-        .achievement-icon {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            color: #e63946;
-        }
-        
-        .achievement.unlocked .achievement-icon {
-            color: #f8c630;
-        }
-        
-        /* NOTIFIKASI DI TENGAH LAYAR */
-        .notification {
+
+        /* Sidebar Desktop & Mobile Base */
+        .side-nav {
+            width: 260px;
+            height: 100vh;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background-color: #4dff91;
-            color: #1a1a2e;
-            padding: 15px 25px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            z-index: 1000;
-            max-width: 90%;
-            width: 350px;
-            font-weight: bold;
-            text-align: center;
-            opacity: 0;
-            transition: transform 0.3s, opacity 0.3s;
-            border: 3px solid #1a8c4d;
-        }
-        
-        .notification.warning {
-            background-color: #ff6b6b;
-            border-color: #e63946;
-        }
-        
-        .notification.show {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-        
-        .save-section {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .save-btn, .reset-btn {
-            padding: 12px 20px;
-            border-radius: 50px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            font-size: 0.95rem;
-            min-height: 50px;
-            min-width: 140px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            touch-action: manipulation;
-        }
-        
-        .save-btn {
-            background: linear-gradient(135deg, #4dff91 0%, #1a8c4d 100%);
-            color: #1a1a2e;
-        }
-        
-        .reset-btn {
-            background: linear-gradient(135deg, #e63946 0%, #a4161a 100%);
+            left: 0;
+            top: 0;
+            background: #1e293b;
             color: white;
+            transition: transform 0.3s ease-in-out;
+            z-index: 60;
         }
-        
-        .income-per-second {
-            color: #4dff91;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-top: 10px;
+
+        /* Sidebar Overlay for Mobile */
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 55;
+            backdrop-filter: blur(2px);
         }
-        
-        .time-info {
-            color: #b8b8b8;
-            font-size: 0.85rem;
-            margin-top: 5px;
+
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s ease-in-out;
+            position: relative;
         }
-        
-        /* Responsive Design untuk Mobile */
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            
-            .stats-container {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            h2 {
-                font-size: 1.2rem;
-            }
-            
-            .stat-value {
-                font-size: 1.4rem;
-            }
-            
-            #serve-btn {
-                padding: 16px 30px;
-                font-size: 1.2rem;
-            }
-            
-            .menu-item, .upgrade-item, .employee-item {
-                flex-direction: column;
-                align-items: flex-start;
-                min-height: auto;
-            }
-            
-            .item-action {
-                width: 100%;
-                margin-top: 10px;
-                align-items: stretch;
-            }
-            
-            .buy-btn {
-                width: 100%;
-                min-width: auto;
-            }
-            
-            .achievement-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .save-section {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .save-btn, .reset-btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .notification {
-                width: 85%;
-                padding: 12px 20px;
-            }
+
+        .content-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            z-index: -1;
+            pointer-events: none;
         }
-        
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                gap: 10px;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            h2 {
-                font-size: 1.1rem;
-            }
-            
-            .stat-box {
-                padding: 10px;
-            }
-            
-            .stat-value {
-                font-size: 1.3rem;
-            }
-            
-            .menu-container, .upgrades-container, .employees-container, 
-            .restaurant-info, .main-action, .progress-container {
-                padding: 12px;
-            }
-            
-            .achievement-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .notification {
-                width: 90%;
-                padding: 12px 18px;
-                font-size: 0.95rem;
-            }
-        }
-        
-        /* Tambahan untuk perbaikan di iOS */
-        @supports (-webkit-touch-callout: none) {
-            .buy-btn, #serve-btn, .save-btn, .reset-btn {
-                cursor: pointer;
-            }
-            
-            body {
-                -webkit-overflow-scrolling: touch;
-            }
-        }
-        
-        /* Overlay untuk notifikasi */
-        .notification-overlay {
+
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 999;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 100;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Toast Notification Styling */
+        #toast {
+            visibility: hidden;
+            min-width: 300px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 200;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: visibility 0s, opacity 0.5s linear;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 768px) {
+            .side-nav {
+                transform: translateX(-100%);
+            }
+            .side-nav.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            #sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        .footer-text {
+            text-align: center;
         }
         
-        .notification-overlay.show {
-            opacity: 1;
-            pointer-events: all;
+        header {
+            text-align: center;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-utensils"></i> MIE GACOAN TYCOON</h1>
-            <p>Simlasi Game Restoran Viral di Indonesia</p>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Notification Toast -->
+    <div id="toast">Silahkan Masukan Kalimat atau Huruf Dahulu</div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Side Navigation -->
+    <nav class="side-nav p-6" id="sidebar">
+        <div class="flex justify-between items-center mb-10 md:block">
+            <div class="text-center w-full">
+                <h2 class="text-2xl font-bold text-blue-400">JMC Tools</h2>
+                <p class="text-xs text-gray-400">First Release</p>
+            </div>
+            <!-- Close button for mobile -->
+            <button onclick="toggleSidebar()" class="md:hidden text-white p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <ul class="space-y-4">
+            <li>
+                <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors bg-blue-600">
+                    <span>Beranda</span>
+                </a>
+            </li>
+            <li>
+                <button onclick="showModal('aboutModal'); if(window.innerWidth < 768) toggleSidebar();" class="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors text-left">
+                    <span>Tentang Aplikasi</span>
+                </button>
+            </li>
+        </ul>
+        <div class="absolute bottom-6 left-6 text-s text-white-500">
+            Build 2026.01.16
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-bg"></div>
+
+        <!-- Mobile Header Bar -->
+        <div class="md:hidden bg-white shadow-sm p-4 flex items-center sticky top-0 z-40">
+            <button onclick="toggleSidebar()" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <span class="ml-4 font-bold text-gray-800">JMC Tools</span>
+        </div>
+
+        <header class="bg-white/80 backdrop-blur-sm shadow-sm py-8 px-6">
+            <h1 class="text-3xl font-bold text-gray-900">JMC Word Case Converter & Analysis</h1>
+            <p class="text-gray-500 mt-2 max-w-2xl mx-auto" id="site-description">
+                Alat profesional untuk mengonversi format teks dan menganalisis statistik dokumen cepat dan akurat.
+            </p>
         </header>
-        
-        <div class="restaurant-info">
-            <div class="stats-container">
-                <div class="stat-box">
-                    <div class="stat-label">Uang Anda</div>
-                    <div class="stat-value" id="money">Rp 1.000</div>
+
+        <section class="flex-grow p-4 md:p-8">
+            <div class="max-w-4xl mx-auto space-y-6">
+                
+                <!-- Statistika di Luar Container -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white/90 backdrop-blur-sm p-5 rounded-xl shadow-sm border-l-4 border-blue-500">
+                        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Jumlah Karakter</p>
+                        <h3 id="charCount" class="text-2xl font-bold text-gray-800">0</h3>
+                    </div>
+                    <div class="bg-white/90 backdrop-blur-sm p-5 rounded-xl shadow-sm border-l-4 border-emerald-500">
+                        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Jumlah Kata</p>
+                        <h3 id="wordCount" class="text-2xl font-bold text-gray-800">0</h3>
+                    </div>
+                    <div class="bg-white/90 backdrop-blur-sm p-5 rounded-xl shadow-sm border-l-4 border-orange-500">
+                        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Jumlah Kalimat</p>
+                        <h3 id="sentenceCount" class="text-2xl font-bold text-gray-800">0</h3>
+                    </div>
+                    <div class="bg-white/90 backdrop-blur-sm p-5 rounded-xl shadow-sm border-l-4 border-purple-500">
+                        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Jumlah Baris</p>
+                        <h3 id="lineCount" class="text-2xl font-bold text-gray-800">0</h3>
+                    </div>
                 </div>
-                <div class="stat-box">
-                    <div class="stat-label">Pendapatan Per Detik</div>
-                    <div class="stat-value" id="income-per-second">Rp 0</div>
+
+                <div class="bg-white/90 backdrop-blur-md rounded-xl shadow-md p-6 border border-white/20">
+                    <textarea 
+                        id="textInput" 
+                        rows="10" 
+                        class="w-full p-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-y text-lg bg-white/50"
+                        placeholder="Masukkan kalimat/paragraf Anda di sini..."></textarea>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+                        <button onclick="convertCase('upper')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors font-medium">UPPER CASE</button>
+                        <button onclick="convertCase('lower')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors font-medium">lower case</button>
+                        <button onclick="convertCase('sentence')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors font-medium">Sentence case</button>
+                        <button onclick="convertCase('title')" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors font-medium">Title Case</button>
+                        <button onclick="convertCase('alternating')" class="bg-gray-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition-colors font-medium">aLtErNaTiNg</button>
+                        <button onclick="copyToClipboard()" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-md transition-colors font-medium">Salin Teks</button>
+                        <button onclick="analyzeText()" class="bg-indigo-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition-colors font-medium">Analisis Detail</button>
+                        <button onclick="clearText()" class="bg-red-600 hover:bg-red-700 text-black py-2 px-4 rounded-md transition-colors font-medium">Hapus Semua</button>
+                    </div>
                 </div>
-                <div class="stat-box">
-                    <div class="stat-label">Total Pelanggan</div>
-                    <div class="stat-value" id="total-customers">0</div>
+            </div>
+        </section>
+
+        <footer class="bg-gray-100/80 backdrop-blur-sm py-6 border-t border-gray-200 mt-auto">
+            <p class="footer-text text-gray-600 text-sm">
+                &copy; Made by JMC World 2026 - Powered by Gemini AI
+            </p>
+        </footer>
+    </main>
+
+    <!-- Modal Analisis Detail -->
+    <div id="analysisModal" class="modal flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden relative">
+            <div class="bg-indigo-600 p-4 text-white flex justify-between items-center">
+                <h2 class="text-xl font-bold">LAPORAN HASIL ANALISIS DETAIL</h2>
+                <button onclick="closeModal('analysisModal')" class="text-white hover:text-gray-200 text-2xl font-bold focus:outline-none">&times;</button>
+            </div>
+            <div class="p-6">
+                <div id="analysisResults" class="space-y-4 max-h-[60vh] overflow-y-auto text-gray-800">
+                    <!-- Results populated by JS -->
                 </div>
-                <div class="stat-box">
-                    <div class="stat-label">Prestasi Dicapai</div>
-                    <div class="stat-value" id="achievement-count">0/10</div>
-                </div>
             </div>
-            
-            <div class="income-per-second">
-                <i class="fas fa-coins"></i> Pendapatan Otomatis: <span id="auto-income">Rp 0</span>/detik
+            <div class="bg-gray-50 p-4 text-right">
+                <button onclick="closeModal('analysisModal')" class="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-black transition-colors">Tutup</button>
             </div>
-            <div class="time-info">
-                <i class="far fa-clock"></i> Waktu Bermain: <span id="play-time">00:00:00</span>
-            </div>
-        </div>
-        
-        <div class="main-action">
-            <h2><i class="fas fa-mug-hot"></i> Layani Pelanggan</h2>
-            <button id="serve-btn">
-                <i class="fas fa-concierge-bell"></i> Sajikan Mie Gacoan!<br>
-                <span style="font-size: 0.8rem;">Rp 10 / klik</span>
-            </button>
-            <p>Klik tombol untuk menyajikan mie gacoan kepada pelanggan dan hasilkan uang!</p>
-        </div>
-        
-        <div class="menu-container">
-            <h2><i class="fas fa-utensil-spoon"></i> Menu Mie Gacoan</h2>
-            <div id="menu-items">
-                <!-- Menu items akan diisi oleh JavaScript -->
-            </div>
-        </div>
-        
-        <div class="upgrades-container">
-            <h2><i class="fas fa-chart-line"></i> Upgrade Restoran</h2>
-            <div id="upgrade-items">
-                <!-- Upgrade items akan diisi oleh JavaScript -->
-            </div>
-        </div>
-        
-        <div class="employees-container">
-            <h2><i class="fas fa-user-tie"></i> Karyawan</h2>
-            <div id="employee-items">
-                <!-- Employee items akan diisi oleh JavaScript -->
-            </div>
-        </div>
-        
-        <div class="progress-container">
-            <h2><i class="fas fa-trophy"></i> Progress Restoran</h2>
-            <p>Tingkat Prestasi: <span id="prestige-level">1</span></p>
-            <div class="progress-bar">
-                <div class="progress-fill" id="prestige-progress" style="width: 0%"></div>
-            </div>
-            <p>Peningkatan berikutnya: <span id="next-prestige">Rp 10.000</span></p>
-            
-            <div class="achievement-container" id="achievements">
-                <!-- Achievements akan diisi oleh JavaScript -->
-            </div>
-        </div>
-        
-        <div class="save-section">
-            <button class="save-btn" id="save-game">
-                <i class="fas fa-save"></i> Simpan Game
-            </button>
-            <button class="reset-btn" id="reset-game">
-                <i class="fas fa-redo"></i> Reset Game
-            </button>
         </div>
     </div>
-    
-    <!-- Overlay untuk notifikasi -->
-    <div class="notification-overlay" id="notification-overlay"></div>
-    
-    <!-- Notifikasi di tengah layar -->
-    <div class="notification" id="notification">
-        <div id="notification-message">Test notification</div>
+
+    <!-- Modal About -->
+    <div id="aboutModal" class="modal flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden relative">
+            <div class="p-4 flex justify-end">
+                <button onclick="closeModal('aboutModal')" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            </div>
+            <div class="p-8 text-center">
+                <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold mb-2">Tentang JMC Tools</h2>
+                <p class="text-gray-600">Aplikasi ini dibuat untuk membantu penulis, editor, dan pengembang dalam mengelola format teks dengan cepat.</p>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Game State
-        const gameState = {
-            money: 100,
-            totalCustomers: 0,
-            incomePerClick: 50,
-            autoIncome: 0,
-            prestigeLevel: 1,
-            prestigeProgress: 0,
-            nextPrestigeAt: 10000,
-            playTime: 0,
-            hasAutoIncomeStarted: false, // Flag untuk menandai apakah pendapatan otomatis sudah dimulai
-            
-            menu: [
-                { id: 1, name: "Mie Gacoan Level 1", level: 1, baseIncome: 10, cost: 100, desc: "Mie original dengan topping standar" },
-                { id: 2, name: "Mie Gacoan Level 2", level: 0, baseIncome: 20, cost: 500, desc: "Mie dengan tambahan pangsit dan bakso" },
-                { id: 3, name: "Mie Gacoan Level 3", level: 0, baseIncome: 80, cost: 2000, desc: "Mie premium dengan seafood" },
-                { id: 4, name: "Mie Gacoan Level 4", level: 0, baseIncome: 200, cost: 10000, desc: "Mie super pedas dengan topping lengkap" },
-                { id: 5, name: "Mie Gacoan Level 5", level: 0, baseIncome: 1000, cost: 50000, desc: "Mie spesial chef dengan bahan import" }
-            ],
-            
-            upgrades: [
-                { id: 1, name: "Iklan Sosial Media", level: 0, cost: 2500, incomeMultiplier: 1.2, desc: "Tingkatkan jumlah pelanggan dengan iklan" },
-                { id: 2, name: "Pelatihan Koki", level: 0, cost: 5000, incomeMultiplier: 1.5, desc: "Koki lebih cepat menyajikan mie" },
-                { id: 3, name: "Renovasi Restoran", level: 0, cost: 20000, incomeMultiplier: 2, desc: "Restoran lebih nyaman dan menarik" },
-                { id: 4, name: "Sistem POS Modern", level: 0, cost: 75000, incomeMultiplier: 3, desc: "Proses pemesanan lebih cepat" },
-                { id: 5, name: "Waralaba", level: 0, cost: 300000, incomeMultiplier: 5, desc: "Buka cabang di lokasi strategis" }
-            ],
-            
-            employees: [
-                { id: 1, name: "Pelayan", level: 0, cost: 1000, autoIncome: 10, desc: "Melayani pelanggan secara otomatis" },
-                { id: 2, name: "Koki Junior", level: 0, cost: 5000, autoIncome: 20, desc: "Memasak mie secara otomatis" },
-                { id: 3, name: "Koki Senior", level: 0, cost: 25000, autoIncome: 60, desc: "Memasak mie lebih cepat" },
-                { id: 4, name: "Manajer", level: 0, cost: 100000, autoIncome: 200, desc: "Mengatur operasional restoran" },
-                { id: 5, name: "Chef Profesional", level: 0, cost: 500000, autoIncome: 500, desc: "Menciptakan menu baru yang laris" }
-            ],
-            
-            achievementList: [
-                { id: 1, name: "Pertama Kali", desc: "Dapatkan Rp 1.000", condition: 1000, unlocked: false, icon: "fas fa-star" },
-                { id: 2, name: "Pendapatan Stabil", desc: "Dapatkan pendapatan otomatis Rp 10/detik", condition: 10, unlocked: false, icon: "fas fa-chart-line" },
-                { id: 3, name: "Pelanggan Setia", desc: "Layani 100 pelanggan", condition: 100, unlocked: false, icon: "fas fa-users" },
-                { id: 4, name: "Menu Lengkap", desc: "Buka semua level menu", condition: 5, unlocked: false, icon: "fas fa-utensils" },
-                { id: 5, name: "Karyawan Terlatih", desc: "Punya 5 karyawan", condition: 5, unlocked: false, icon: "fas fa-user-tie" },
-                { id: 6, name: "Taipan Muda", desc: "Kumpulkan Rp 1.000.000", condition: 1000000, unlocked: false, icon: "fas fa-crown" },
-                { id: 7, name: "Upgrade Maksimal", desc: "Upgrade semua fasilitas", condition: 5, unlocked: false, icon: "fas fa-tools" },
-                { id: 8, name: "Restoran Populer", desc: "Layani 1.000 pelanggan", condition: 1000, unlocked: false, icon: "fas fa-fire" },
-                { id: 9, name: "Miliarder Mie", desc: "Kumpulkan Rp 10.000.000", condition: 10000000, unlocked: false, icon: "fas fa-gem" },
-                { id: 10, name: "Legenda Mie Gacoan", desc: "Capai tingkat prestise 5", condition: 5, unlocked: false, icon: "fas fa-trophy" }
-            ]
+        const textInput = document.getElementById('textInput');
+        const toast = document.getElementById('toast');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        window.onload = function() {
+            closeModal('analysisModal');
+            closeModal('aboutModal');
         };
-        
-        // DOM Elements
-        const moneyElement = document.getElementById('money');
-        const incomePerSecondElement = document.getElementById('income-per-second');
-        const totalCustomersElement = document.getElementById('total-customers');
-        const achievementCountElement = document.getElementById('achievement-count');
-        const autoIncomeElement = document.getElementById('auto-income');
-        const playTimeElement = document.getElementById('play-time');
-        const serveButton = document.getElementById('serve-btn');
-        const menuItemsContainer = document.getElementById('menu-items');
-        const upgradeItemsContainer = document.getElementById('upgrade-items');
-        const employeeItemsContainer = document.getElementById('employee-items');
-        const achievementsContainer = document.getElementById('achievements');
-        const notification = document.getElementById('notification');
-        const notificationMessage = document.getElementById('notification-message');
-        const notificationOverlay = document.getElementById('notification-overlay');
-        const saveGameButton = document.getElementById('save-game');
-        const resetGameButton = document.getElementById('reset-game');
-        const prestigeLevelElement = document.getElementById('prestige-level');
-        const prestigeProgressElement = document.getElementById('prestige-progress');
-        const nextPrestigeElement = document.getElementById('next-prestige');
-        
-        // Variabel untuk mengontrol interval pendapatan otomatis
-        let autoIncomeInterval = null;
-        
-        // Fungsi helper untuk event mobile
-        function addMobileEvent(element, event, handler) {
-            if (element && handler) {
-                element.addEventListener(event, handler, { passive: true });
-            }
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
-        
-        // Format angka ke format mata uang Indonesia
-        function formatMoney(amount) {
-            if (amount >= 1000000000) {
-                return `${(amount / 1000000000).toFixed(2)} Miliar`;
-            } else if (amount >= 1000000) {
-                return `${(amount / 1000000).toFixed(2)} Juta`;
-            } else if (amount >= 1000) {
-                return `${(amount / 1000).toFixed(3)} Ribu`;
-            }
-            return `Rp ${amount}`;
-        }
-        
-        // Tampilkan notifikasi di tengah layar
-        function showNotification(message, isWarning = false) {
-            notificationMessage.textContent = message;
-            notification.classList.add('show');
-            
-            if (isWarning) {
-                notification.classList.add('warning');
-            } else {
-                notification.classList.remove('warning');
-            }
-            
-            notificationOverlay.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-                notificationOverlay.classList.remove('show');
-                notification.classList.remove('warning');
+
+        function showToast() {
+            toast.className = "show";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("show", ""); 
             }, 3000);
         }
-        
-        // Update tampilan statistik game
+
+        textInput.addEventListener('input', () => {
+            updateStats();
+        });
+
         function updateStats() {
-            moneyElement.textContent = formatMoney(gameState.money);
-            
-            // Hitung pendapatan per detik
-            let totalIncomePerSecond = 0;
-            
-            // Hitung dari menu yang sudah di-upgrade (level > 0)
-            gameState.menu.forEach(item => {
-                if (item.level > 0) {
-                    totalIncomePerSecond += item.baseIncome * item.level;
-                }
-            });
-            
-            // Hitung dari karyawan yang sudah dipekerjakan (level > 0)
-            gameState.employees.forEach(employee => {
-                if (employee.level > 0) {
-                    totalIncomePerSecond += employee.autoIncome * employee.level;
-                }
-            });
-            
-            // Terapkan multiplier dari upgrade
-            let totalMultiplier = 1;
-            gameState.upgrades.forEach(upgrade => {
-                if (upgrade.level > 0) {
-                    totalMultiplier *= upgrade.incomeMultiplier;
-                }
-            });
-            
-            totalIncomePerSecond *= totalMultiplier;
-            gameState.autoIncome = totalIncomePerSecond;
-            
-            incomePerSecondElement.textContent = formatMoney(totalIncomePerSecond);
-            autoIncomeElement.textContent = formatMoney(totalIncomePerSecond);
-            totalCustomersElement.textContent = gameState.totalCustomers;
-            
-            // Update progress prestise
-            const progressPercent = Math.min(100, (gameState.money / gameState.nextPrestigeAt) * 100);
-            prestigeProgressElement.style.width = `${progressPercent}%`;
-            prestigeLevelElement.textContent = gameState.prestigeLevel;
-            nextPrestigeElement.textContent = formatMoney(gameState.nextPrestigeAt);
-            
-            // Update jumlah prestasi
-            const unlockedAchievements = gameState.achievementList.filter(a => a.unlocked).length;
-            achievementCountElement.textContent = `${unlockedAchievements}/10`;
-            
-            // Cek prestasi
-            checkAchievements();
-            
-            // Mulai pendapatan otomatis jika ada menu atau karyawan yang sudah di-upgrade
-            startAutoIncomeIfNeeded();
-            
-            // Update tampilan tombol setelah perubahan uang
-            updateButtonStates();
+            const text = textInput.value;
+            document.getElementById('charCount').textContent = text.length;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            document.getElementById('wordCount').textContent = words;
+            const sentences = text.trim() ? text.split(/[.!?]+/).filter(s => s.trim().length > 0).length : 0;
+            document.getElementById('sentenceCount').textContent = sentences;
+            const lines = text.length > 0 ? text.split(/\r\n|\r|\n/).length : 0;
+            document.getElementById('lineCount').textContent = lines;
         }
-        
-        // Mulai pendapatan otomatis jika sudah ada menu atau karyawan yang di-upgrade
-        function startAutoIncomeIfNeeded() {
-            // Cek apakah ada menu yang di-upgrade (selain level 1 default) atau karyawan yang dipekerjakan
-            const hasUpgradedMenu = gameState.menu.some(item => item.level > 0);
-            const hasEmployees = gameState.employees.some(employee => employee.level > 0);
-            
-            // Jika ada menu yang di-upgrade atau karyawan, dan pendapatan otomatis belum dimulai
-            if ((hasUpgradedMenu || hasEmployees) && !gameState.hasAutoIncomeStarted) {
-                gameState.hasAutoIncomeStarted = true;
-                
-                // Mulai interval pendapatan otomatis
-                if (!autoIncomeInterval) {
-                    autoIncomeInterval = setInterval(addAutoIncome, 1000);
-                    showNotification("Pendapatan otomatis telah dimulai!");
-                }
+
+        function convertCase(type) {
+            let text = textInput.value;
+            if (!text) return;
+
+            switch(type) {
+                case 'upper': text = text.toUpperCase(); break;
+                case 'lower': text = text.toLowerCase(); break;
+                case 'sentence': text = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase()); break;
+                case 'title': text = text.toLowerCase().split(' ').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join(' '); break;
+                case 'alternating': text = text.split('').map((c, i) => i % 2 === 0 ? c.toLowerCase() : c.toUpperCase()).join(''); break;
             }
-            
-            // Jika tidak ada menu yang di-upgrade dan tidak ada karyawan, hentikan pendapatan otomatis
-            if (!hasUpgradedMenu && !hasEmployees && gameState.hasAutoIncomeStarted) {
-                gameState.hasAutoIncomeStarted = false;
-                
-                // Hentikan interval pendapatan otomatis
-                if (autoIncomeInterval) {
-                    clearInterval(autoIncomeInterval);
-                    autoIncomeInterval = null;
-                }
-            }
+            textInput.value = text;
+            updateStats();
         }
-        
-        // Update status tombol berdasarkan uang yang dimiliki
-        function updateButtonStates() {
-            // Update tombol menu
-            gameState.menu.forEach(item => {
-                const cost = item.cost * Math.pow(1.5, item.level);
-                const button = document.querySelector(`[data-menu-id="${item.id}"]`);
-                if (button) {
-                    if (gameState.money >= cost) {
-                        button.classList.remove('insufficient');
-                    } else {
-                        button.classList.add('insufficient');
-                    }
-                }
-            });
-            
-            // Update tombol upgrade
-            gameState.upgrades.forEach(upgrade => {
-                const cost = upgrade.cost * Math.pow(5, upgrade.level);
-                const button = document.querySelector(`[data-upgrade-id="${upgrade.id}"]`);
-                if (button) {
-                    if (gameState.money >= cost) {
-                        button.classList.remove('insufficient');
-                    } else {
-                        button.classList.add('insufficient');
-                    }
-                }
-            });
-            
-            // Update tombol karyawan
-            gameState.employees.forEach(employee => {
-                const cost = employee.cost * Math.pow(2, employee.level);
-                const button = document.querySelector(`[data-employee-id="${employee.id}"]`);
-                if (button) {
-                    if (gameState.money >= cost) {
-                        button.classList.remove('insufficient');
-                    } else {
-                        button.classList.add('insufficient');
-                    }
-                }
-            });
+
+        function clearText() {
+            textInput.value = '';
+            updateStats();
         }
-        
-        // Render menu items
-        function renderMenuItems() {
-            menuItemsContainer.innerHTML = '';
-            
-            gameState.menu.forEach(item => {
-                const menuItem = document.createElement('div');
-                menuItem.className = 'menu-item';
-                
-                const cost = item.cost * Math.pow(1.5, item.level);
-                const hasEnoughMoney = gameState.money >= cost;
-                
-                menuItem.innerHTML = `
-                    <div class="item-info">
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-desc">${item.desc}</div>
-                        <div class="item-level">Level: ${item.level} | Pendapatan: ${formatMoney(item.baseIncome * item.level)}/detik</div>
-                    </div>
-                    <div class="item-action">
-                        <div class="item-cost">${formatMoney(Math.floor(cost))}</div>
-                        <button class="buy-btn ${hasEnoughMoney ? '' : 'insufficient'}" data-menu-id="${item.id}">
-                            ${item.level === 0 ? 'Buka' : 'Upgrade'}
-                        </button>
-                    </div>
-                `;
-                
-                menuItemsContainer.appendChild(menuItem);
-            });
-            
-            // Tambahkan event listener untuk tombol menu (mobile-friendly)
-            setTimeout(() => {
-                document.querySelectorAll('[data-menu-id]').forEach(button => {
-                    // Hapus event listener lama jika ada
-                    button.replaceWith(button.cloneNode(true));
-                });
-                
-                // Tambahkan event listener baru
-                document.querySelectorAll('[data-menu-id]').forEach(button => {
-                    const newButton = button;
-                    newButton.addEventListener('click', function() {
-                        const menuId = parseInt(this.getAttribute('data-menu-id'));
-                        buyMenuUpgrade(menuId);
-                    });
-                    addMobileEvent(newButton, 'touchstart', function(e) {
-                        e.preventDefault();
-                        const menuId = parseInt(this.getAttribute('data-menu-id'));
-                        buyMenuUpgrade(menuId);
-                    });
-                });
-            }, 10);
+
+        function copyToClipboard() {
+            if (!textInput.value) return;
+            textInput.select();
+            document.execCommand('copy');
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "Berhasil!";
+            setTimeout(() => btn.innerText = originalText, 2000);
         }
-        
-        // Render upgrade items
-        function renderUpgradeItems() {
-            upgradeItemsContainer.innerHTML = '';
+
+        function analyzeText() {
+            const text = textInput.value;
             
-            gameState.upgrades.forEach(upgrade => {
-                const upgradeItem = document.createElement('div');
-                upgradeItem.className = 'upgrade-item';
-                
-                const cost = upgrade.cost * Math.pow(2, upgrade.level);
-                const hasEnoughMoney = gameState.money >= cost;
-                
-                upgradeItem.innerHTML = `
-                    <div class="item-info">
-                        <div class="item-name">${upgrade.name}</div>
-                        <div class="item-desc">${upgrade.desc}</div>
-                        <div class="item-level">Level: ${upgrade.level} | Multiplier: ${upgrade.incomeMultiplier}x</div>
-                    </div>
-                    <div class="item-action">
-                        <div class="item-cost">${formatMoney(Math.floor(cost))}</div>
-                        <button class="buy-btn ${hasEnoughMoney ? '' : 'insufficient'}" data-upgrade-id="${upgrade.id}">
-                            ${upgrade.level === 0 ? 'Beli' : 'Upgrade'}
-                        </button>
-                    </div>
-                `;
-                
-                upgradeItemsContainer.appendChild(upgradeItem);
-            });
-            
-            // Tambahkan event listener untuk tombol upgrade (mobile-friendly)
-            setTimeout(() => {
-                document.querySelectorAll('[data-upgrade-id]').forEach(button => {
-                    button.replaceWith(button.cloneNode(true));
-                });
-                
-                document.querySelectorAll('[data-upgrade-id]').forEach(button => {
-                    const newButton = button;
-                    newButton.addEventListener('click', function() {
-                        const upgradeId = parseInt(this.getAttribute('data-upgrade-id'));
-                        buyUpgrade(upgradeId);
-                    });
-                    addMobileEvent(newButton, 'touchstart', function(e) {
-                        e.preventDefault();
-                        const upgradeId = parseInt(this.getAttribute('data-upgrade-id'));
-                        buyUpgrade(upgradeId);
-                    });
-                });
-            }, 10);
-        }
-        
-        // Render employee items
-        function renderEmployeeItems() {
-            employeeItemsContainer.innerHTML = '';
-            
-            gameState.employees.forEach(employee => {
-                const employeeItem = document.createElement('div');
-                employeeItem.className = 'employee-item';
-                
-                const cost = employee.cost * Math.pow(1.8, employee.level);
-                const hasEnoughMoney = gameState.money >= cost;
-                
-                employeeItem.innerHTML = `
-                    <div class="item-info">
-                        <div class="item-name">${employee.name}</div>
-                        <div class="item-desc">${employee.desc}</div>
-                        <div class="item-level">Level: ${employee.level} | Pendapatan: +${formatMoney(employee.autoIncome * employee.level)}/detik</div>
-                    </div>
-                    <div class="item-action">
-                        <div class="item-cost">${formatMoney(Math.floor(cost))}</div>
-                        <button class="buy-btn ${hasEnoughMoney ? '' : 'insufficient'}" data-employee-id="${employee.id}">
-                            ${employee.level === 0 ? 'Hire' : 'Upgrade'}
-                        </button>
-                    </div>
-                `;
-                
-                employeeItemsContainer.appendChild(employeeItem);
-            });
-            
-            // Tambahkan event listener untuk tombol karyawan (mobile-friendly)
-            setTimeout(() => {
-                document.querySelectorAll('[data-employee-id]').forEach(button => {
-                    button.replaceWith(button.cloneNode(true));
-                });
-                
-                document.querySelectorAll('[data-employee-id]').forEach(button => {
-                    const newButton = button;
-                    newButton.addEventListener('click', function() {
-                        const employeeId = parseInt(this.getAttribute('data-employee-id'));
-                        hireEmployee(employeeId);
-                    });
-                    addMobileEvent(newButton, 'touchstart', function(e) {
-                        e.preventDefault();
-                        const employeeId = parseInt(this.getAttribute('data-employee-id'));
-                        hireEmployee(employeeId);
-                    });
-                });
-            }, 10);
-        }
-        
-        // Render achievements
-        function renderAchievements() {
-            achievementsContainer.innerHTML = '';
-            
-            gameState.achievementList.forEach(achievement => {
-                const achievementElement = document.createElement('div');
-                achievementElement.className = `achievement ${achievement.unlocked ? 'unlocked' : ''}`;
-                
-                achievementElement.innerHTML = `
-                    <div class="achievement-icon">
-                        <i class="${achievement.icon}"></i>
-                    </div>
-                    <div class="item-name">${achievement.name}</div>
-                    <div class="item-desc">${achievement.desc}</div>
-                `;
-                
-                achievementsContainer.appendChild(achievementElement);
-            });
-        }
-        
-        // Beli/upgrade menu
-        function buyMenuUpgrade(menuId) {
-            const menu = gameState.menu.find(m => m.id === menuId);
-            const cost = menu.cost * Math.pow(1.5, menu.level);
-            
-            // Cek apakah uang cukup
-            if (gameState.money < cost) {
-                showNotification("Uang Anda Tidak Cukup!", true);
+            if (!text.trim()) {
+                showToast();
                 return;
             }
+
+            const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
+            const lettersOnly = text.replace(/[^a-zA-Z]/g, '').length;
+            const digitsOnly = text.replace(/[^0-9]/g, '').length;
+            // Hitung simbol (bukan huruf, angka, atau whitespace)
+            const symbolsOnly = text.replace(/[a-zA-Z0-9\s]/g, '').length;
             
-            // Jika uang cukup, lakukan pembelian
-            gameState.money -= Math.floor(cost);
-            menu.level++;
+            const resultDiv = document.getElementById('analysisResults');
             
-            updateStats();
-            renderMenuItems();
-            
-            if (menu.level === 1) {
-                showNotification(`Menu ${menu.name} telah dibuka!`);
-            } else {
-                showNotification(`Menu ${menu.name} ditingkatkan ke level ${menu.level}!`);
-            }
+            resultDiv.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-blue-50 p-6 rounded-xl border border-blue-100">
+                        <span class="block text-sm font-bold text-blue-600 uppercase mb-1">TOTAL HURUF</span>
+                        <span class="text-3xl font-bold">${lettersOnly}</span>
+                    </div>
+                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100">
+                        <span class="block text-sm font-bold text-indigo-600 uppercase mb-1">TOTAL KALIMAT</span>
+                        <span class="text-3xl font-bold">${sentences.length}</span>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-xl border border-amber-100">
+                        <span class="block text-sm font-bold text-amber-600 uppercase mb-1">TOTAL ANGKA</span>
+                        <span class="text-3xl font-bold">${digitsOnly}</span>
+                    </div>
+                    <div class="bg-rose-50 p-6 rounded-xl border border-rose-100">
+                        <span class="block text-sm font-bold text-rose-600 uppercase mb-1">TOTAL SIMBOL</span>
+                        <span class="text-3xl font-bold">${symbolsOnly}</span>
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg">
+                    <h4 class="font-semibold mb-2 text-gray-700">Ringkasan Tambahan:</h4>
+                    <ul class="text-sm text-gray-600 space-y-1 list-disc ml-5">
+                        <li>Rata-rata huruf per kata: ${text.trim() ? (lettersOnly / (text.trim().split(/\s+/).length)).toFixed(1) : 0}</li>
+                        <li>Spasi yang digunakan: ${(text.match(/\s/g) || []).length}</li>
+                        <li>Karakter non-alfanumerik (termasuk spasi): ${text.length - (lettersOnly + digitsOnly)}</li>
+                    </ul>
+                </div>
+            `;
+            showModal('analysisModal');
         }
-        
-        // Beli/upgrade upgrade
-        function buyUpgrade(upgradeId) {
-            const upgrade = gameState.upgrades.find(u => u.id === upgradeId);
-            const cost = upgrade.cost * Math.pow(2, upgrade.level);
-            
-            // Cek apakah uang cukup
-            if (gameState.money < cost) {
-                showNotification("Uang Anda Tidak Cukup!", true);
-                return;
-            }
-            
-            // Jika uang cukup, lakukan pembelian
-            gameState.money -= Math.floor(cost);
-            upgrade.level++;
-            
-            updateStats();
-            renderUpgradeItems();
-            
-            if (upgrade.level === 1) {
-                showNotification(`${upgrade.name} telah dibeli!`);
-            } else {
-                showNotification(`${upgrade.name} ditingkatkan ke level ${upgrade.level}!`);
-            }
+
+        function showModal(id) {
+            document.getElementById(id).style.display = 'flex';
         }
-        
-        // Hire/upgrade karyawan
-        function hireEmployee(employeeId) {
-            const employee = gameState.employees.find(e => e.id === employeeId);
-            const cost = employee.cost * Math.pow(1.8, employee.level);
-            
-            // Cek apakah uang cukup
-            if (gameState.money < cost) {
-                showNotification("Uang Anda Tidak Cukup!", true);
-                return;
-            }
-            
-            // Jika uang cukup, lakukan pembelian
-            gameState.money -= Math.floor(cost);
-            employee.level++;
-            
-            updateStats();
-            renderEmployeeItems();
-            
-            if (employee.level === 1) {
-                showNotification(`${employee.name} telah dipekerjakan!`);
-            } else {
-                showNotification(`${employee.name} ditingkatkan ke level ${employee.level}!`);
-            }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
         }
-        
-        // Cek pencapaian achievement
-        function checkAchievements() {
-            let newAchievements = [];
-            
-            // Achievement 1: Dapatkan Rp 1.000
-            if (!gameState.achievementList[0].unlocked && gameState.money >= 1000) {
-                gameState.achievementList[0].unlocked = true;
-                newAchievements.push(gameState.achievementList[0].name);
-            }
-            
-            // Achievement 2: Pendapatan otomatis Rp 10/detik
-            if (!gameState.achievementList[1].unlocked && gameState.autoIncome >= 10) {
-                gameState.achievementList[1].unlocked = true;
-                newAchievements.push(gameState.achievementList[1].name);
-            }
-            
-            // Achievement 3: Layani 100 pelanggan
-            if (!gameState.achievementList[2].unlocked && gameState.totalCustomers >= 100) {
-                gameState.achievementList[2].unlocked = true;
-                newAchievements.push(gameState.achievementList[2].name);
-            }
-            
-            // Achievement 4: Buka semua level menu
-            if (!gameState.achievementList[3].unlocked) {
-                const allMenusUnlocked = gameState.menu.every(menu => menu.level > 0);
-                if (allMenusUnlocked) {
-                    gameState.achievementList[3].unlocked = true;
-                    newAchievements.push(gameState.achievementList[3].name);
-                }
-            }
-            
-            // Achievement 5: Punya 5 karyawan
-            if (!gameState.achievementList[4].unlocked) {
-                const totalEmployees = gameState.employees.reduce((sum, emp) => sum + emp.level, 0);
-                if (totalEmployees >= 5) {
-                    gameState.achievementList[4].unlocked = true;
-                    newAchievements.push(gameState.achievementList[4].name);
-                }
-            }
-            
-            // Achievement 6: Kumpulkan Rp 1.000.000
-            if (!gameState.achievementList[5].unlocked && gameState.money >= 1000000) {
-                gameState.achievementList[5].unlocked = true;
-                newAchievements.push(gameState.achievementList[5].name);
-            }
-            
-            // Achievement 7: Upgrade semua fasilitas
-            if (!gameState.achievementList[6].unlocked) {
-                const allUpgradesMaxed = gameState.upgrades.every(upgrade => upgrade.level > 0);
-                if (allUpgradesMaxed) {
-                    gameState.achievementList[6].unlocked = true;
-                    newAchievements.push(gameState.achievementList[6].name);
-                }
-            }
-            
-            // Achievement 8: Layani 1.000 pelanggan
-            if (!gameState.achievementList[7].unlocked && gameState.totalCustomers >= 1000) {
-                gameState.achievementList[7].unlocked = true;
-                newAchievements.push(gameState.achievementList[7].name);
-            }
-            
-            // Achievement 9: Kumpulkan Rp 10.000.000
-            if (!gameState.achievementList[8].unlocked && gameState.money >= 10000000) {
-                gameState.achievementList[8].unlocked = true;
-                newAchievements.push(gameState.achievementList[8].name);
-            }
-            
-            // Achievement 10: Capai tingkat prestise 5
-            if (!gameState.achievementList[9].unlocked && gameState.prestigeLevel >= 5) {
-                gameState.achievementList[9].unlocked = true;
-                newAchievements.push(gameState.achievementList[9].name);
-            }
-            
-            // Tampilkan notifikasi untuk achievement baru
-            if (newAchievements.length > 0) {
-                renderAchievements();
-                newAchievements.forEach(achievement => {
-                    showNotification(`Prestasi terbuka: ${achievement}!`);
-                });
-            }
-        }
-        
-        // Update waktu bermain
-        function updatePlayTime() {
-            gameState.playTime++;
-            
-            const hours = Math.floor(gameState.playTime / 3600);
-            const minutes = Math.floor((gameState.playTime % 3600) / 60);
-            const seconds = gameState.playTime % 60;
-            
-            playTimeElement.textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        // Tambahkan pendapatan otomatis
-        function addAutoIncome() {
-            // Hanya tambah pendapatan otomatis jika sudah dimulai
-            if (gameState.hasAutoIncomeStarted) {
-                gameState.money += gameState.autoIncome;
-                if (gameState.autoIncome > 0) {
-                    gameState.totalCustomers += Math.floor(gameState.autoIncome / 10);
-                }
-                updateStats();
-            }
-        }
-        
-        // Prestise system
-        function checkPrestige() {
-            if (gameState.money >= gameState.nextPrestigeAt) {
-                gameState.prestigeLevel++;
-                gameState.money = 1000; // Reset uang
-                gameState.nextPrestigeAt *= 5; // Naikkan target berikutnya
-                
-                // Reset beberapa progress
-                gameState.menu.forEach(menu => {
-                    menu.level = menu.id === 1 ? 1 : 0;
-                });
-                
-                gameState.upgrades.forEach(upgrade => {
-                    upgrade.level = 0;
-                });
-                
-                gameState.employees.forEach(employee => {
-                    employee.level = 0;
-                });
-                
-                // Reset flag pendapatan otomatis
-                gameState.hasAutoIncomeStarted = false;
-                
-                // Income per click bertambah dengan prestise
-                gameState.incomePerClick = 10 * gameState.prestigeLevel;
-                
-                showNotification(`Selamat! Anda mencapai Prestige Level ${gameState.prestigeLevel}!`);
-                updateStats();
-                renderMenuItems();
-                renderUpgradeItems();
-                renderEmployeeItems();
-            }
-        }
-        
-        // Simpan game ke localStorage
-        function saveGame() {
-            const saveData = {
-                money: gameState.money,
-                totalCustomers: gameState.totalCustomers,
-                incomePerClick: gameState.incomePerClick,
-                autoIncome: gameState.autoIncome,
-                prestigeLevel: gameState.prestigeLevel,
-                prestigeProgress: gameState.prestigeProgress,
-                nextPrestigeAt: gameState.nextPrestigeAt,
-                playTime: gameState.playTime,
-                hasAutoIncomeStarted: gameState.hasAutoIncomeStarted,
-                menu: gameState.menu,
-                upgrades: gameState.upgrades,
-                employees: gameState.employees,
-                achievementList: gameState.achievementList
-            };
-            
-            localStorage.setItem('mieGacoanSave', JSON.stringify(saveData));
-            showNotification('Game berhasil disimpan!');
-        }
-        
-        // Load game dari localStorage
-        function loadGame() {
-            const savedData = localStorage.getItem('mieGacoanSave');
-            
-            if (savedData) {
-                const saveData = JSON.parse(savedData);
-                
-                gameState.money = saveData.money;
-                gameState.totalCustomers = saveData.totalCustomers;
-                gameState.incomePerClick = saveData.incomePerClick;
-                gameState.autoIncome = saveData.autoIncome;
-                gameState.prestigeLevel = saveData.prestigeLevel;
-                gameState.prestigeProgress = saveData.prestigeProgress;
-                gameState.nextPrestigeAt = saveData.nextPrestigeAt;
-                gameState.playTime = saveData.playTime;
-                gameState.hasAutoIncomeStarted = saveData.hasAutoIncomeStarted || false;
-                gameState.menu = saveData.menu;
-                gameState.upgrades = saveData.upgrades;
-                gameState.employees = saveData.employees;
-                gameState.achievementList = saveData.achievementList;
-                
-                updateStats();
-                renderMenuItems();
-                renderUpgradeItems();
-                renderEmployeeItems();
-                renderAchievements();
-                
-                showNotification('Game berhasil dimuat!');
-            } else {
-                showNotification('Tidak ada data game yang tersimpan.');
-            }
-        }
-        
-        // Reset game
-        function resetGame() {
-            if (confirm('Apakah Anda yakin ingin mereset game? Semua progress akan hilang.')) {
-                localStorage.removeItem('mieGacoanSave');
-                
-                // Reset ke state awal
-                gameState.money = 1000;
-                gameState.totalCustomers = 0;
-                gameState.incomePerClick = 50;
-                gameState.autoIncome = 0;
-                gameState.prestigeLevel = 1;
-                gameState.prestigeProgress = 0;
-                gameState.nextPrestigeAt = 10000;
-                gameState.playTime = 0;
-                gameState.hasAutoIncomeStarted = false;
-                
-                gameState.menu = [
-                    { id: 1, name: "Mie Gacoan Level 1", level: 1, baseIncome: 5, cost: 100, desc: "Mie original dengan topping standar" },
-                    { id: 2, name: "Mie Gacoan Level 2", level: 0, baseIncome: 15, cost: 500, desc: "Mie dengan tambahan pangsit dan bakso" },
-                    { id: 3, name: "Mie Gacoan Level 3", level: 0, baseIncome: 50, cost: 2000, desc: "Mie premium dengan seafood" },
-                    { id: 4, name: "Mie Gacoan Level 4", level: 0, baseIncome: 200, cost: 10000, desc: "Mie super pedas dengan topping lengkap" },
-                    { id: 5, name: "Mie Gacoan Level 5", level: 0, baseIncome: 1000, cost: 50000, desc: "Mie spesial chef dengan bahan import" }
-                ];
-                
-                gameState.upgrades = [
-                    { id: 1, name: "Iklan Sosial Media", level: 0, cost: 500, incomeMultiplier: 1.2, desc: "Tingkatkan jumlah pelanggan dengan iklan" },
-                    { id: 2, name: "Pelatihan Koki", level: 0, cost: 2000, incomeMultiplier: 1.5, desc: "Koki lebih cepat menyajikan mie" },
-                    { id: 3, name: "Renovasi Restoran", level: 0, cost: 10000, incomeMultiplier: 2, desc: "Restoran lebih nyaman dan menarik" },
-                    { id: 4, name: "Sistem POS Modern", level: 0, cost: 50000, incomeMultiplier: 3, desc: "Proses pemesanan lebih cepat" },
-                    { id: 5, name: "Waralaba", level: 0, cost: 200000, incomeMultiplier: 5, desc: "Buka cabang di lokasi strategis" }
-                ];
-                
-                gameState.employees = [
-                    { id: 1, name: "Pelayan", level: 0, cost: 1000, autoIncome: 2, desc: "Melayani pelanggan secara otomatis" },
-                    { id: 2, name: "Koki Junior", level: 0, cost: 5000, autoIncome: 10, desc: "Memasak mie secara otomatis" },
-                    { id: 3, name: "Koki Senior", level: 0, cost: 25000, autoIncome: 50, desc: "Memasak mie lebih cepat" },
-                    { id: 4, name: "Manajer", level: 0, cost: 100000, autoIncome: 200, desc: "Mengatur operasional restoran" },
-                    { id: 5, name: "Chef Profesional", level: 0, cost: 500000, autoIncome: 1000, desc: "Menciptakan menu baru yang laris" }
-                ];
-                
-                gameState.achievementList.forEach(achievement => {
-                    achievement.unlocked = false;
-                });
-                
-                // Hentikan interval pendapatan otomatis jika sedang berjalan
-                if (autoIncomeInterval) {
-                    clearInterval(autoIncomeInterval);
-                    autoIncomeInterval = null;
-                }
-                
-                updateStats();
-                renderMenuItems();
-                renderUpgradeItems();
-                renderEmployeeItems();
-                renderAchievements();
-                
-                showNotification('Game telah direset!');
-            }
-        }
-        
-        // Initialize game
-        function initGame() {
-            // Load saved game jika ada
-            loadGame();
-            
-            // Setup event listeners untuk tombol utama (mobile-friendly)
-            serveButton.addEventListener('click', () => {
-                gameState.money += gameState.incomePerClick;
-                gameState.totalCustomers++;
-                updateStats();
-                checkPrestige();
-            });
-            
-            // Tambahkan touch event untuk mobile
-            addMobileEvent(serveButton, 'touchstart', (e) => {
-                e.preventDefault();
-                gameState.money += gameState.incomePerClick;
-                gameState.totalCustomers++;
-                updateStats();
-                checkPrestige();
-            });
-            
-            saveGameButton.addEventListener('click', saveGame);
-            addMobileEvent(saveGameButton, 'touchstart', (e) => {
-                e.preventDefault();
-                saveGame();
-            });
-            
-            resetGameButton.addEventListener('click', resetGame);
-            addMobileEvent(resetGameButton, 'touchstart', (e) => {
-                e.preventDefault();
-                resetGame();
-            });
-            
-            // Setup play time counter
-            setInterval(updatePlayTime, 1000);
-            
-            // Setup prestige check interval
-            setInterval(checkPrestige, 5000);
-            
-            // Initial render
-            updateStats();
-            renderMenuItems();
-            renderUpgradeItems();
-            renderEmployeeItems();
-            renderAchievements();
-        }
-        
-        // Start the game when page loads
-        document.addEventListener('DOMContentLoaded', initGame);
-        
-        // Mencegah zoom dengan pinch gesture di mobile
-        document.addEventListener('touchmove', function(e) {
-            if (e.scale !== 1) { e.preventDefault(); }
-        }, { passive: false });
-        
-        // Mencegah konteks menu di mobile
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-        
-        // Tutup notifikasi ketika overlay diklik
-        notificationOverlay.addEventListener('click', function() {
-            notification.classList.remove('show');
-            notificationOverlay.classList.remove('show');
-            notification.classList.remove('warning');
-        });
     </script>
 </body>
 </html>
