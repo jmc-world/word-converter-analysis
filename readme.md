@@ -4,6 +4,7 @@ Aplikasi web untuk konversi kata atau kalimat panjang maupun singkat
 ## Fitur : 
 - Melihat statistik jumlah karakter, kata, kalimat, dan baris
 - Laporan Hasil Analisis Detail lengkap dengan total huruf, kalimat, angka, simbol
+- Uppercase, Alternating, Lower case, Sentence Case, Title Case, dan Hapus Semua
 
 ## Engine yang digunakan :
 - HTML
