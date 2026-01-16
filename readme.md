@@ -1,17 +1,9 @@
-# MIE GACOAN TYCOON SIMULATOR
-Game simulasi bisnis idle/kliker dengan latar belakang waralaba makanan ringan khas Indonesia (Mie Gacoan) berbasis browser.
-Pemain dimulai dari gerai kecil, melayani pelanggan secara simulasi, mengembangkan menu, dan membangun kerajaan kuliner mie kekinian.
+# JMC WORD CONVERTER & ANALYSIS
+Aplikasi web untuk konversi kata atau kalimat panjang maupun singkat
 
-## Fitur di dalam game simulasi : 
-- Auto clicker sesuai pendapatan per detik
-- 10 Prestasi pencapaian
-- 5 Jenis Rasa Mie Gacoan
-- 5 Jenis Karyawan
-- Upgrade Restoran
-- Notifikasi Ketika Berhasil Upgrade
-- Notifikasi Uang Tidak Mencukupi
-- Responsive Untuk Mobile
-- Simpan atau Reset Game Data
+## Fitur : 
+- Melihat statistik jumlah karakter, kata, kalimat, dan baris
+- Laporan Hasil Analisis Detail lengkap dengan total huruf, kalimat, angka, simbol
 
 ## Engine yang digunakan :
 - HTML
